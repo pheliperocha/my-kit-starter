@@ -1,0 +1,24 @@
+### Directories ###
+
+node_modules/
+bower_components/
+dist/
+.tmp
+
+### Images ###
+
+*.psd
+*.ai
+
+### detritus ###
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk

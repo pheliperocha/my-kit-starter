@@ -1,0 +1,13 @@
+{
+	"name": "project",
+	"version": "1.0.0",
+	"author": "Phelipe Rocha",
+	"main": "gulpfile.js",
+	"devDependencies": {
+		"gulp": "latest",
+		"gulp-uglify": "latest",
+		"gulp-uglifycss": "latest",
+		"autoprefixer": "latest",
+		"imagemin": "latest"
+	}
+}
