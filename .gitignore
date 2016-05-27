@@ -1,9 +1,11 @@
 ### Directories ###
 
 node_modules/
-bower_components/
+app/lib/
 dist/
 report/
+files/
+documentation/
 .tmp
 
 ### Images ###
@@ -15,6 +17,9 @@ report/
 
 Thumbs.db
 ehthumbs.db
+debug.log
+.ftpquota
+error_log
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
@@ -23,3 +28,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+.sass-cache
