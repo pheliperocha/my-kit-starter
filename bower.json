@@ -1,5 +1,7 @@
 {
-  "name": "Kit Starter",
-  "dependencies": {},
-  "devDependencies": {}
+    "name": "Kit Starter",
+    "dependencies": {
+        "normalize-css": "~4.1.1"
+    },
+    "devDependencies": {}
 }

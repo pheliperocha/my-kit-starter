@@ -50,8 +50,8 @@ gulp.task('scripts_deploy', function () {
 
 // Task the styles files of the project
 // Compile site sass files into css
-// Add autoprefixer to fit in the 1% most useful browser and uglify
-// Concatante with libs css files
+// Add autoprefixer
+// Concatante with normalize and libs css files
 // Send to dist folder
 // Run stream in browserSync
 gulp.task('styles', function () {
@@ -69,6 +69,7 @@ gulp.task('styles', function () {
 
     return $.streamqueue(
         { objectMode: true },
+        gulp.src(['./app/lib/normalize-css/normalize.css']),
         gulp.src(['./app/styles/styles.scss']).pipe($.plumber()).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     )
         .pipe($.plumber({
@@ -83,11 +84,11 @@ gulp.task('styles', function () {
 });
 
 // Task the styles files of the project
+// Get normalize.css and unglify
 // Compile site sass files into css
-// Add autoprefixer to fit in the 1% most useful browser and uglify
+// Add autoprefixer and uglify
 // Concatante with libs css files
 // Send to dist folder
-// Run stream in browserSync
 gulp.task('styles_deploy', function () {
     const AUTOPREFIXER_BROWSERS = [
         'ie >= 10',
@@ -103,6 +104,7 @@ gulp.task('styles_deploy', function () {
 
     return $.streamqueue(
         { objectMode: true },
+        gulp.src(['./app/lib/normalize-css/normalize.css']).pipe($.plumber()).pipe($.uglifycss()),
         gulp.src(['./app/styles/styles.scss']).pipe($.plumber()).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS)).pipe($.uglifycss())
     )
         .pipe($.plumber({
@@ -115,34 +117,33 @@ gulp.task('styles_deploy', function () {
         .pipe(gulp.dest('./dist/styles/'))
 });
 
-// Minify html files
-gulp.task('html', function () {
-    gulp.src('./app/**/*.html')
+gulp.task('view', function () {
+    gulp.src('./app/view/**/*')
         .pipe($.plumber())
         .pipe(gulp.dest('dist/view/'))
         .pipe($.browserSync.stream());
 });
 
-// Minify html files
-gulp.task('html_deploy', function () {
-    gulp.src(['./app/**/*.html'])
+gulp.task('view_deploy', function () {
+    gulp.src(['./app/view/**/*'])
         .pipe($.plumber())
         .pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest('./dist/view/'));
 });
 
-gulp.task('php', function() {
-    return gulp.src(['./app/**/*.php'])
+gulp.task('index', function() {
+    return gulp.src(['./app/index.php'])
         .pipe($.plumber())
+        .pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest('./dist/'))
         .pipe($.browserSync.stream());
 });
 
-gulp.task('php_deploy', function() {
+gulp.task('index_deploy', function() {
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/**/*.php']),
-        gulp.src(['./app/*', './app/.*'])
+        gulp.src(['./app/*', './app/.*', '!./app/index.php']),
+        gulp.src(['./app/index.php']).pipe($.plumber()).pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
     )
         .pipe($.plumber())
         .pipe(gulp.dest('./dist/'))
@@ -194,9 +195,9 @@ gulp.task('watch', function () {
 });
 
 gulp.task('prod', function (cb) {
-    return $.runSequence('clean', ['scripts_deploy', 'styles_deploy', 'html_deploy', 'php_deploy', 'images_deploy', 'plato'], cb)
+    return $.runSequence('clean', ['scripts_deploy', 'styles_deploy', 'view_deploy', 'index_deploy', 'images_deploy', 'plato'], cb)
 });
 
 gulp.task('default', function (cb) {
-    return $.runSequence(['scripts', 'styles', 'html', 'php', 'images', 'plato'], 'connect', 'watch', cb)
+    return $.runSequence(['scripts', 'styles', 'view', 'index', 'images', 'plato'], 'connect', 'watch', cb)
 });
