@@ -190,8 +190,8 @@ gulp.task('watch', function () {
     gulp.watch("./app/src/**/*.js", ['scripts']);
     gulp.watch("./app/styles/**/*.scss", ['styles']);
     gulp.watch("./app/styles/**/*.css", ['styles']);
-    gulp.watch("./app/**/*.php", ['php']);
-    gulp.watch("./app/**/*.html", ['html']);
+    gulp.watch("./app/index.php", ['index']);
+    gulp.watch("./app/view/**/*", ['view']);
 });
 
 gulp.task('prod', function (cb) {
