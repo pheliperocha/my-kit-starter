@@ -152,7 +152,10 @@ gulp.task('index_deploy', function() {
 
 // Optimize images
 gulp.task('images', function () {
-    return gulp.src('./app/img/**/*')
+    return $.streamqueue(
+        { objectMode: true },
+        gulp.src(['./app/img/**/*.jpg', './app/img/**/*.png', './app/img/**/*.gif', './app/img/**/*.svg'])
+    )
         .pipe($.plumber())
         .pipe(gulp.dest('dist/img'))
         .pipe($.size({title: 'images'}))
@@ -160,7 +163,10 @@ gulp.task('images', function () {
 
 // Optimize images
 gulp.task('images_deploy', function () {
-    return gulp.src('./app/img/**/*')
+    return $.streamqueue(
+        { objectMode: true },
+        gulp.src(['./app/img/**/*.jpg', './app/img/**/*.png', './app/img/**/*.gif', './app/img/**/*.svg'])
+    )
         .pipe($.plumber())
         .pipe($.cache($.imagemin({
         progressive: true,
