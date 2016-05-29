@@ -1,6 +1,6 @@
 'use strict';
 
-var gulp, gulpLoadPlugins;
+var gulp, gulpLoadPlugins, plumberHandleError;
 
 gulp = require('gulp');
 gulpLoadPlugins = require('gulp-load-plugins');
@@ -8,6 +8,13 @@ gulpLoadPlugins = require('gulp-load-plugins');
 const $ = gulpLoadPlugins({
     pattern: '*'
 });
+
+plumberHandleError = {
+    errorHandler: function (err) {
+        console.log(err);
+        this.emit('end');
+    }
+};
 
 gulp.task('connect', function() {
     $.connectPhp.server({
@@ -29,9 +36,9 @@ gulp.task('clean', function () {
 gulp.task('scripts', function () {
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/src/**/*.js'])
+        gulp.src(['./app/lib/jquery/dist/jquery.min.js', './app/src/**/*.js'])
     )
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.concat('script.min.js'))
         .pipe(gulp.dest('./dist/src/'))
         .pipe($.browserSync.stream());
@@ -41,9 +48,9 @@ gulp.task('scripts', function () {
 gulp.task('scripts_deploy', function () {
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/src/**/*.js']).pipe($.plumber()).pipe($.uglify())
+        gulp.src(['./app/src/**/*.js']).pipe($.plumber(plumberHandleError)).pipe($.uglify())
     )
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.concat('script.min.js'))
         .pipe(gulp.dest('./dist/src/'))
 });
@@ -70,14 +77,9 @@ gulp.task('styles', function () {
     return $.streamqueue(
         { objectMode: true },
         gulp.src(['./app/lib/normalize-css/normalize.css']),
-        gulp.src(['./app/styles/styles.scss']).pipe($.plumber()).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+        gulp.src(['./app/styles/styles.scss']).pipe($.plumber(plumberHandleError)).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     )
-        .pipe($.plumber({
-        errorHandler: function (err) {
-            console.log(err);
-            this.emit('end');
-        }
-    }))
+        .pipe($.plumber(plumberHandleError))
         .pipe($.concat('style.min.css'))
         .pipe(gulp.dest('./dist/styles/'))
         .pipe($.browserSync.stream());
@@ -104,36 +106,31 @@ gulp.task('styles_deploy', function () {
 
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/lib/normalize-css/normalize.css']).pipe($.plumber()).pipe($.uglifycss()),
-        gulp.src(['./app/styles/styles.scss']).pipe($.plumber()).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS)).pipe($.uglifycss())
+        gulp.src(['./app/lib/normalize-css/normalize.css']).pipe($.plumber(plumberHandleError)).pipe($.uglifycss()),
+        gulp.src(['./app/styles/styles.scss']).pipe($.plumber(plumberHandleError)).pipe($.sass()).pipe($.autoprefixer(AUTOPREFIXER_BROWSERS)).pipe($.uglifycss())
     )
-        .pipe($.plumber({
-        errorHandler: function (err) {
-            console.log(err);
-            this.emit('end');
-        }
-    }))
+        .pipe($.plumber(plumberHandleError))
         .pipe($.concat('style.min.css'))
         .pipe(gulp.dest('./dist/styles/'))
 });
 
 gulp.task('view', function () {
     gulp.src('./app/view/**/*')
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe(gulp.dest('dist/view/'))
         .pipe($.browserSync.stream());
 });
 
 gulp.task('view_deploy', function () {
     gulp.src(['./app/view/**/*'])
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest('./dist/view/'));
 });
 
 gulp.task('index', function() {
     return gulp.src(['./app/index.php'])
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest('./dist/'))
         .pipe($.browserSync.stream());
@@ -143,9 +140,9 @@ gulp.task('index_deploy', function() {
     return $.streamqueue(
         { objectMode: true },
         gulp.src(['./app/*', './app/.*', '!./app/index.php']),
-        gulp.src(['./app/index.php']).pipe($.plumber()).pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
+        gulp.src(['./app/index.php']).pipe($.plumber(plumberHandleError)).pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
     )
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe(gulp.dest('./dist/'))
         .pipe($.browserSync.stream());
 });
@@ -156,7 +153,7 @@ gulp.task('images', function () {
         { objectMode: true },
         gulp.src(['./app/img/**/*.jpg', './app/img/**/*.png', './app/img/**/*.gif', './app/img/**/*.svg'])
     )
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe(gulp.dest('dist/img'))
         .pipe($.size({title: 'images'}))
 });
@@ -167,7 +164,7 @@ gulp.task('images_deploy', function () {
         { objectMode: true },
         gulp.src(['./app/img/**/*.jpg', './app/img/**/*.png', './app/img/**/*.gif', './app/img/**/*.svg'])
     )
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.cache($.imagemin({
         progressive: true,
         interlaced: true
@@ -178,7 +175,7 @@ gulp.task('images_deploy', function () {
 
 gulp.task('plato', function () {
     return gulp.src('./app/src/**/*.js')
-        .pipe($.plumber())
+        .pipe($.plumber(plumberHandleError))
         .pipe($.plato('./report/', {
         jshint: {
             options: {
