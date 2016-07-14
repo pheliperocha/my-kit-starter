@@ -36,7 +36,8 @@ gulp.task('clean', function () {
 gulp.task('scripts', function () {
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/lib/jquery/dist/jquery.min.js', './app/src/**/*.js'])
+        gulp.src(['./app/lib/jquery/dist/jquery.min.js']),
+        gulp.src(['./app/src/**/*.js'])
     )
         .pipe($.plumber(plumberHandleError))
         .pipe($.concat('script.min.js'))
@@ -48,7 +49,8 @@ gulp.task('scripts', function () {
 gulp.task('scripts_deploy', function () {
     return $.streamqueue(
         { objectMode: true },
-        gulp.src(['./app/src/**/*.js']).pipe($.plumber(plumberHandleError)).pipe($.uglify())
+        gulp.src(['./app/lib/jquery/dist/jquery.min.js']),
+        gulp.src(['./app/src/**/*.js']).pipe($.plumber()).pipe($.uglify())
     )
         .pipe($.plumber(plumberHandleError))
         .pipe($.concat('script.min.js'))
@@ -128,10 +130,16 @@ gulp.task('view_deploy', function () {
         .pipe(gulp.dest('./dist/view/'));
 });
 
+gulp.task('api', function() {
+    return gulp.src(['./app/api/**/*.php'])
+        .pipe($.plumber(plumberHandleError))
+        .pipe(gulp.dest('./dist/api/'))
+        .pipe($.browserSync.stream());
+});
+
 gulp.task('index', function() {
     return gulp.src(['./app/index.php'])
         .pipe($.plumber(plumberHandleError))
-        .pipe($.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest('./dist/'))
         .pipe($.browserSync.stream());
 });
@@ -194,13 +202,14 @@ gulp.task('watch', function () {
     gulp.watch("./app/styles/**/*.scss", ['styles']);
     gulp.watch("./app/styles/**/*.css", ['styles']);
     gulp.watch("./app/index.php", ['index']);
+    gulp.watch("./app/api/**/*.php", ['api']);
     gulp.watch("./app/view/**/*", ['view']);
 });
 
 gulp.task('prod', function (cb) {
-    return $.runSequence('clean', ['scripts_deploy', 'styles_deploy', 'view_deploy', 'index_deploy', 'images_deploy', 'plato'], cb)
+    return $.runSequence('clean', ['scripts_deploy', 'styles_deploy', 'view_deploy', 'api', 'index_deploy', 'images_deploy', 'plato'], cb)
 });
 
 gulp.task('default', function (cb) {
-    return $.runSequence(['scripts', 'styles', 'view', 'index', 'images', 'plato'], 'connect', 'watch', cb)
+    return $.runSequence(['scripts', 'styles', 'view', 'api', 'index', 'images', 'plato'], 'connect', 'watch', cb)
 });
