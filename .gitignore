@@ -16,6 +16,7 @@ documentation/
 ### detritus ###
 
 Thumbs.db
+.brackets.json
 ehthumbs.db
 debug.log
 .ftpquota
