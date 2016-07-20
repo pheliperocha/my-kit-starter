@@ -9,6 +9,7 @@ From: Rio de Janeiro, Brazil
 
 Node
 Gulp
+Composer
 Npm
 Bitbucket
 Adobe
@@ -19,6 +20,6 @@ Site URL:
 Last update: 2016-05-27
 Language: Português, English, Español
 Doctype: HTML5
-Built with: HTML5, CSS3, JavaScript, Gulp, Bower, Git
+Built with: HTML5, CSS3, JavaScript, Gulp, Bower, Composer, Git
 Software: Brackets, Photoshop, SourceTree
 Lib:
