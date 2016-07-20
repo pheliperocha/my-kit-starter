@@ -79,58 +79,6 @@
     </head>
     <body>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h1>Título H1</h1>
-                    <p>Desenvolvimento de sites responsivos, original e criativo. Criação de site para todos os clientes, desde sites mais básico até aos mais avançados. Desenvolvimento de lojas virtuais com a identidade visual da sua empresa, <a href="#">otimizadas e com os principais</a> meios de pagamento. Sistemas completos, personalizado e específico para o seu negócio. Sistemas online, que funcionam em qualquer lugar, em qualquer dispositivo e em tempo real.</p>
-
-                    <p>Otimização do site para um layout mais moderno. Além de melhorias na velocidade, segurança e um melhor posicionamento nos buscadores como Google. Análise e otimização de sites com Google Analytics e outras ferramentas para melhorar o posicionamento nos buscadores. Orientação para melhorar seu site ou sistema web. Analisando problemas com segurança, SEO, acessibilidade e UI/EX.</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2>Título H2</h2>
-                    <p>Texto para paragrapho</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h3>Título H3</h3>
-                    <p>Texto para paragrapho</p>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4>Título H4</h4>
-                    <p>Texto para paragrapho</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h5>Título H5</h5>
-                    <p>Texto para paragrapho</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h6>Título H6</h6>
-                    <p>Texto para paragrapho</p>
-                </div>
-            </div>
-
-        </div>
-
         <!-- Page Script -->
         <script src="src/script.min.js"></script>
     </body>
