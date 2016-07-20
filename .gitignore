@@ -2,6 +2,7 @@
 
 node_modules/
 app/lib/
+app/vendor/
 dist/
 report/
 /files/
